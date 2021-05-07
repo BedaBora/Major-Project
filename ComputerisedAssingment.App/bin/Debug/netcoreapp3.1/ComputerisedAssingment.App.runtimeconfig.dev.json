@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\SERBIUS\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\SERBIUS\\.nuget\\packages"
+    ]
+  }
+}

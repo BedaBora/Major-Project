@@ -1,0 +1,164 @@
+﻿@using ComputerisedAssingment.ModelEntity
+@model ComputerisedAssingment.ModelView.TeacherUploadVM
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+@{
+    List<StudentUpload> studentUploadData = ViewBag.StudentUploadData;
+    ViewData["Title"] = "Submitted";
+    Layout = "~/Views/Shared/_Layout_Users.cshtml";
+}
+
+<div class="container-fluid" style="margin-top: 8%;">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-md-4" style="border-right: 1px solid rgba(0,0,0,.125);">
+                        <div class="col-md-6 offset-md-4">
+                            <br />
+                            <a asp-area="" asp-controller="Teacher" asp-action="Upload">
+                                Upload
+                                <br />
+                                <br />
+                            </a>
+                            <a asp-area="" asp-controller="Teacher" asp-action="View">
+                                View
+                                <br />
+                                <br />
+                            </a>
+                            <a asp-area="" asp-controller="Teacher" asp-action="Submitted">
+                                Submitted
+                                <br />
+                                <br />
+                            </a>
+                            <a asp-area="" asp-controller="Teacher" asp-action="Students">
+                                Students
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Student Id</th>
+                                    <th scope="col" width="200px">File</th>
+                                    <th scope="col">Upload Date</th>
+                                    <th scope="col">Grade</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var i in studentUploadData)
+                                {
+                                    <tr>
+                                        <td>@i.Title</td>
+                                        <td>@i.StudentUniqueId</td>
+                                        <td><a href="/StudentUpload/@i.Upload_file">@i.Upload_file</a></td>
+                                        <td>@i.Upload_date.ToString("dd-MM-yyyy")</td>
+                                        <td>@i.Grade</td>
+                                        <td><button class="btn btn-sm btn-success" onclick="SelectStudent('@i.TeacherUploadId', '@i.StudentUniqueId')">Grade</button></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Grade</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-8">
+                    <div class="form-group row">
+                        <lable class="col-md-4 col-form-label ">Grade</lable>
+                        <div class="col-md-6">
+                            <input type="hidden" id="TeacherUploadId" name="TeacherUploadId" />
+                            <input type="hidden" id="StudentUniqueId" name="StudentUniqueId" />
+                            <input type="text" id="Grade" name="Grade" />
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" onclick="SubmitGrade()" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
+
+@section scripts {
+    <script>
+        var AjaxPostToken = $('#RequestVerificationToken').val();
+
+         
+        function SelectStudent(TeacherUploadId, StudentUniqueId) { 
+
+            if (TeacherUploadId !== null && StudentUniqueId !==null) {
+
+                $("#StudentUniqueId").val(StudentUniqueId);
+                $("#TeacherUploadId").val(TeacherUploadId);
+                $("#exampleModal").modal('show');
+            }
+        }
+
+        function SubmitGrade() { 
+
+            var StudentUniqueId = $("#StudentUniqueId").val();
+            var TeacherUploadId = $("#TeacherUploadId").val();
+            var Grade = $("#Grade").val();
+            if (TeacherUploadId !== null && StudentUniqueId !== null && Grade!== null) { 
+
+                $.ajax({
+                    url: '@Url.Action("SubmitGrade", "Teacher")',
+                    dataType: "json",
+                    type: "POST",
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    data: { __RequestVerificationToken: AjaxPostToken, StudentUniqueId: StudentUniqueId, TeacherUploadId: TeacherUploadId, Grade: Grade},
+                    success: function (result) {
+                        $("#exampleModal").modal('hide');
+
+                        swal({
+                            title: '',
+                            text: 'Grade Save succesfully.',
+                            type: 'success'
+                        });
+                        setTimeout(function () {
+                            swal.close();
+                        },
+                            1000);
+                        setTimeout(function () {
+                            window.location.reload(1);
+                        }, 1000);
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                    },
+                    complete: function () {
+
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -1,0 +1,68 @@
+﻿@using ComputerisedAssingment.ModelEntity
+@model ComputerisedAssingment.ModelView.StudentUploadVM
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    AssingStudents teacherData = ViewBag.TeacherData;
+    var session = @HttpContextAccessor.HttpContext.Session.GetString("LoginCredUniqueId");
+    ViewData["Title"] = "Upload";
+    Layout = "~/Views/Shared/_Layout_Users.cshtml";
+}
+
+
+<div class="container-fluid" style="margin-top: 8%;">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-md-4" style="border-right: 1px solid rgba(0,0,0,.125);">
+                        <div class="col-md-6 offset-md-4">
+                            <br />
+                            <a asp-area="" asp-controller="Student" asp-action="Upload">
+                                Upload
+                                <br />
+                                <br />
+                            </a>
+                            <a asp-area="" asp-controller="Student" asp-action="View">
+                                View
+                                <br />
+                                <br />
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "", role = "form", @enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" id="StudentUniqueId" class="StudentUniqueId" name="StudentUniqueId" required="required" value="@session.Trim('"')"> 
+                            <input type="hidden" id="TeacherUniqueId" class="TeacherUniqueId" name="TeacherUniqueId" required="required" value="@teacherData.TeacherUniqueId"> 
+                            
+
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.TeacherUploadId, new { @class = "col-md-4 col-form-label " })
+                            <div class="col-md-6">
+                                @Html.DropDownListFor(m => m.TeacherUploadId, new SelectList(ViewBag.TitleData.Result, "Value", "Text"), new { @class = "form-control", @required = "required" })
+                                @Html.ValidationMessageFor(m => m.TeacherUploadId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.Upload_file, new { @class = "col-md-4 col-form-label " })
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Upload_file, new { @class = "form-control", @required = "required", @type = "file" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 offset-md-4">
+                            <button type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                    }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

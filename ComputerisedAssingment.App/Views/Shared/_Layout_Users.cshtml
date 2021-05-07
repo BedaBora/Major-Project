@@ -1,0 +1,100 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var session = @HttpContextAccessor.HttpContext.Session.GetString("LoginCredUniqueId"); 
+    var AlertMsg = TempData["AlertMsg"];
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/css/UsersPanel.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar fixed-top navbar-dark bg-info ">
+            <a class="navbar-brand" href="#">
+                Computerised Assignment
+            </a>
+            <span class="navbar-text ">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-item nav-link dropdown-toggle" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @session.Trim('"')
+                            <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                            <a class="dropdown-item" id="logout_btn" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </span>
+        </nav>
+    </div>
+
+
+    @RenderBody()
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/sweetalert2.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            if ("@AlertMsg" == "Saved") {
+                swal({
+                    title: '',
+                    text: 'Save succesfully.',
+                    type: 'success'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    7000);
+            }
+            else if ("@AlertMsg" == "Existed") {
+                swal({
+                    title: '',
+                    text: 'Same Data Already Existed.',
+                    type: 'warning'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    5000);
+            }
+             else if ("@AlertMsg" == "NotFound") {
+                swal({
+                    title: '',
+                    text: 'There is no such type of data \n Or \n Account not activated',
+                    type: 'warning'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    5000);
+            }
+            else if ("@AlertMsg" == "Error") {
+                swal({
+                    title: '',
+                    text: 'Try Again.',
+                    type: 'error'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    5000);
+            }
+            });
+
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

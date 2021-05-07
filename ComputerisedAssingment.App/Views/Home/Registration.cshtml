@@ -1,0 +1,106 @@
+﻿@using ComputerisedAssingment.ModelEntity
+@model ComputerisedAssingment.ModelView.UsersVM
+@{
+    ViewData["Title"] = "Registration";
+    Layout = "~/Views/Shared/_Layout_Login_Registration.cshtml";
+}
+
+<main class="login-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Registration</div>
+                    <div class="card-body">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.Id)
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.Email, new { @class = "col-md-4 col-form-label " })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @required = "required", @type = "email" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.UniqueId, new { @class = "col-md-4 col-form-label " })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.UniqueId, new { @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.FullName, new { @class = "col-md-4 col-form-label " })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.Password, new { @class = "col-md-4 col-form-label " })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.Password, new { @type = "password", @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 col-form-label " })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.ConfirmPassword, new { @type = "password", @class = "form-control", @required = "required" })
+                                    <span id="pmsg"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.UserType, new { @class = "col-md-4 col-form-label " })
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(m => m.UserType, new { @class = "", @type = "checkbox" })
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" id="signup" name="signup" class="btn btn-primary">
+                                    Sign Up
+                                </button>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#signup').prop('disabled', true);
+        });
+
+        $('#UserType').click(function () {
+            var checkBoxValue = 0;
+            if ($('#UserType').is(':checked')) {
+                checkBoxValue = 1;
+            }
+            else {
+                checkBoxValue = 0;
+            }
+            $('#UserType').val(checkBoxValue);
+        });
+
+        $('#Password, #ConfirmPassword').on('keyup', function () {
+            if ($('#Password').val() == $('#ConfirmPassword').val()) {
+                $('#pmsg').html('Matching').css('color', 'green');
+                $('#signup').prop('disabled', false);
+            }
+            else {
+                $('#pmsg').html('Not Matched').css('color', 'red');
+                $('#signup').prop('disabled', true);
+            }
+        });
+    </script>
+}

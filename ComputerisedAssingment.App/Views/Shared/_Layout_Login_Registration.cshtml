@@ -1,0 +1,131 @@
+﻿@{ 
+    var AlertMsg = TempData["AlertMsg"];
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/LoginRegistraion.css" rel="stylesheet" />
+    <link href="~/css/sweetalert2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
+        <div class="container">
+            <a class="navbar-brand" href="#">Computerised Assingment</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Registration">Registration</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    @RenderBody()
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/sweetalert2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            if ("@AlertMsg" == "Saved") {
+                swal({
+                    title: '',
+                    text: 'Kindly verify your mail by confirming the link sent to email.',
+                    type: 'success'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    7000);
+            }
+            else if ("@AlertMsg" == "Existed") {
+                swal({
+                    title: '',
+                    text: 'Same Id or Email Already Existed.',
+                    type: 'warning'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    5000);
+            }
+             else if ("@AlertMsg" == "NotFound") {
+                swal({
+                    title: '',
+                    text: 'There is no such type of data \n Or \n Account not activated',
+                    type: 'warning'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    5000);
+            }
+            else if ("@AlertMsg" == "Error") {
+                swal({
+                    title: '',
+                    text: 'Try Again.',
+                    type: 'error'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    5000);
+            }
+            else if ("@AlertMsg" == "MailActive") {
+                swal({
+                    title: '',
+                    text: 'Registration Successfull with mail verification. \n <a href="/">Click Here</a> to Login Page',
+                    type: 'success'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    10000);
+            }
+            else if ("@AlertMsg" == "MailActivated") {
+                swal({
+                    title: '',
+                    text: 'This link is already expired. \n  <a href="/">Click Here</a> to Login Page',
+                    type: 'warning'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    10000);
+            }
+            else if ("@AlertMsg" == "NotAssinged") {
+                swal({
+                    title: '',
+                    text: 'Please Assing the student to access the portal',
+                    type: 'warning'
+                });
+                setTimeout(function () {
+                    swal.close();
+                },
+                    5000);
+            }
+            });
+
+    </script>
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

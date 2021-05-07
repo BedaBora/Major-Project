@@ -1,0 +1,95 @@
+﻿@using ComputerisedAssingment.ModelEntity
+@{
+    List<TeacherUpload> teacherUploaddata = ViewBag.TeacherUploaddata;
+    List<StudentUpload> studentUploaddata = ViewBag.StudentUploaddata;
+    ViewData["Title"] = "view";
+    Layout = "~/Views/Shared/_Layout_Users.cshtml";
+}
+
+
+<div class="container-fluid" style="margin-top: 8%;">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-md-4" style="border-right: 1px solid rgba(0,0,0,.125);">
+                        <div class="col-md-6 offset-md-4">
+                            <br />
+                            <a asp-area="" asp-controller="Student" asp-action="Upload">
+                                Upload
+                                <br />
+                                <br />
+                            </a>
+                            <a asp-area="" asp-controller="Student" asp-action="View">
+                                View
+                                <br />
+                                <br />
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Owner</th>
+                                    <th scope="col">Deadline</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Grade</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var i in teacherUploaddata)
+                                {
+                                    {
+                                        bool check = false;
+
+                                        @foreach (var j in studentUploaddata)
+                                        {
+
+
+                                            @if (i.Id == j.TeacherUploadId)
+                                            {
+                                                check = true;
+                                                <tr>
+                                                    <td><a href="/TeacherUpload/@i.Upload_file">@i.Title</a></td>
+
+                                                    <td>@i.TeacherUniqueId</td>
+                                                    <td>@i.Deadline.ToString("dd-MM-yyyy")</td>
+
+
+                                                    <td>Submitted</td>
+
+
+                                                    <td>@j.Grade</td>
+
+
+                                                </tr>
+                                            }
+                                        }
+
+                                        @if (check == false)
+                                        {
+                                            <tr>
+                                                <td><a href="/TeacherUpload/@i.Upload_file">@i.Title</a></td>
+                                                <td>@i.TeacherUniqueId</td>
+                                                <td>@i.Deadline.ToString("dd-MM-yyyy")</td>
+                                                <td>Not Submitted</td>
+
+                                                <td>N\A</td>
+
+                                            </tr>
+                                        }
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+﻿.navbar-nav .dropdown-menu.dropdown-menu {
+    position: absolute;
+}
+
+.navbar-nav .dropdown-item.dropdown-item,
+.navbar-nav .dropdown-item.dropdown-item:hover {
+    color: blue;
+}

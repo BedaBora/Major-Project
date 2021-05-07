@@ -1,0 +1,83 @@
+﻿@using ComputerisedAssingment.ModelEntity
+@model ComputerisedAssingment.ModelView.AssingStudentsVM
+@{
+    ViewData["Title"] = "Assign Students";
+    Layout = "~/Views/Shared/_Layout_Users.cshtml";
+}
+
+<div class="container-fluid" style="margin-top: 8%;">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-md-4" style="border-right: 1px solid rgba(0,0,0,.125);">
+                        <div class="col-md-6 offset-md-4">
+                            <br />
+                            <a asp-area="" asp-controller="Admin" asp-action="AssingStudents" class="btn btn-primary">
+                                Save Details
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(m => m.Id)
+                            <div class="form-group row">
+                                @Html.LabelFor(m => m.TeacherUniqueId, new { @class = "col-md-4 col-form-label " })
+                                <div class="col-md-6">
+                                    @Html.DropDownListFor(m => m.TeacherUniqueId, new SelectList(ViewBag.TeacherData.Result, "Value", "Text"), new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(m => m.TeacherUniqueId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="multi-field-wrapper">
+                                <div class="multi-fields">
+                                    <div class="multi-field">
+                                        <div class="form-group row">
+                                            @Html.LabelFor(m => m.StudentUniqueId, new { @class = "col-md-4 col-form-label " })
+                                            <div class="col-md-6">
+                                                @Html.TextBoxFor(m => m.StudentUniqueId, new { @class = "form-control", @required = "required" })
+                                                @Html.ValidationMessageFor(m => m.StudentUniqueId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <button type="button"  style="float: right; margin-top: -6%;" class="remove-field btn btn-sm btn-danger">x</button>
+                                    </div>
+                                </div>
+                                <button type="button" style="float: right;margin: -6% 5% 0% 0%;" class="add-field btn btn-sm btn-success" >+</button>
+                            </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Submit
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        $(document).ready(function () {
+
+        });
+
+
+        $('.multi-field-wrapper').each(function () {
+            var $wrapper = $('.multi-fields', this);
+            $(".add-field", $(this)).click(function (e) {
+                $('.multi-field:first-child', $wrapper).clone(true).appendTo($wrapper).find('input').val('').focus();
+            });
+            $('.multi-field .remove-field', $wrapper).click(function () {
+                if ($('.multi-field', $wrapper).length > 1)
+                    $(this).parent('.multi-field').remove();
+            });
+        });
+
+    </script>
+}

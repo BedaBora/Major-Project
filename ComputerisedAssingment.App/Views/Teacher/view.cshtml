@@ -1,0 +1,62 @@
+﻿@using ComputerisedAssingment.ModelEntity
+@{
+    List<TeacherUpload> teacherUploaddata = ViewBag.TeacherUploaddata;
+    ViewData["Title"] = "view";
+    Layout = "~/Views/Shared/_Layout_Users.cshtml";
+}
+
+<div class="container-fluid" style="margin-top: 8%;">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-md-4" style="border-right: 1px solid rgba(0,0,0,.125);">
+                        <div class="col-md-6 offset-md-4">
+                            <br />
+                            <a asp-area="" asp-controller="Teacher" asp-action="Upload">
+                                Upload
+                                <br />
+                                <br />
+                            </a>
+                            <a asp-area="" asp-controller="Teacher" asp-action="View">
+                                View
+                                <br />
+                                <br />
+                            </a>
+                            <a asp-area="" asp-controller="Teacher" asp-action="Submitted">
+                                Submitted
+                                <br />
+                                <br />
+                            </a>
+                            <a asp-area="" asp-controller="Teacher" asp-action="Students">
+                                Students
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col" width="200px">File</th>
+                                    <th scope="col">Deadline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var i in teacherUploaddata)
+                                {
+                                    <tr>
+                                        <td>@i.Title</td>
+                                        <td><a href="/TeacherUpload/@i.Upload_file">@i.Upload_file</a></td>
+                                        <td>@i.Deadline.ToString("dd-MM-yyyy")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
