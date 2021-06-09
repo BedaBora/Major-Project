@@ -1,3 +1,3 @@
-# Fiver_ComputerAssingment
+# 8th Semester Major Project
 
-Fiver client work
+Computerised assignment project for major project submission
